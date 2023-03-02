@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>DCT Message Embedder</title>
+  <script src="jpgjs/jpg.js"></script>
   <script src="petitoJPEG/demo/support/spin.js"></script>
   <style media="screen" type="text/css">
     body {
@@ -71,6 +72,9 @@ label {
                     <input type="range" id="slider" style="" min="1" max="100" value="50" data-highlight="true" ></input>
                 </div>
                 <div id="compression" style="font-weight: bold; font-size: 1em;"></div>
+                <div>
+                    <pre id="decoded-text" style="white-space: pre-wrap;word-wrap: break-word;"></pre>
+                </div>
 
             </div>
             <div class="flex-item-right">
@@ -205,7 +209,8 @@ var do_encode = function(quality) {
             var url = msg.data.url;
 
             var dstImgElem = document.getElementById("dstimg");
-            var imgElem = document.getElementById("img");;
+            var imgElem = document.getElementById("img");
+            var textElem = document.getElementById("decoded-text");
 
             imgElem.style.width = displayWidth;
             dstImgElem.style.width = displayWidth;
@@ -216,6 +221,13 @@ var do_encode = function(quality) {
 
             inprogress = false;
             spinner.stop();
+
+            var j = new JpegImage();
+              j.onload = function() {
+                textElem.innerHTML = j.getMessage();
+              };
+            j.load(url)
+
             break;
         case 'log':
             console.log(msg.data.log);

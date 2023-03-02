@@ -1,3 +1,6 @@
 [submodule "petitoJPEG"]
 	path = petitoJPEG
 	url = https://github.com/eraxeg/petitoJPEG
+[submodule "jpgjs"]
+	path = jpgjs
+	url = https://github.com/eraxeg/jpgjs
