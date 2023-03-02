@@ -1,0 +1,3 @@
+[submodule "petitoJPEG"]
+	path = petitoJPEG
+	url = https://github.com/eraxeg/petitoJPEG
