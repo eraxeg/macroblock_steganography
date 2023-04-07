@@ -1,0 +1,53 @@
+// https://codepen.io/E-nathan/pen/MXLRdB
+
+.container--tabs {
+    margin: 2rem;
+}
+
+.container--tabs .nav-tabs {
+    padding: 0;
+    float: left;
+    width: 100%;
+    margin: 0;
+    list-style-type: none;
+}
+
+.container--tabs .nav-tabs>li {
+    float: left;
+    margin-bottom: -1px;
+}
+
+.container--tabs .nav-tabs>li>a {
+    float: left;
+    margin-right: 2px;
+    line-height: 1.42857143;
+    padding: 1em 2em;
+}
+
+
+.container--tabs .nav-tabs>li.active>a,
+.container--tabs .nav-tabs>li.active>a:hover,
+.container--tabs .nav-tabs>li.active>a:focus {
+    color: #555;
+    cursor: default;
+    background-color: #efefef;
+}
+
+.container--tabs .tab-content {
+    float: left;
+    width: 100%;
+}
+
+.container--tabs .tab-content>.tab-pane {
+    display: none;
+}
+
+.container--tabs .tab-content>.tab-pane.active {
+    display: block;
+    padding: 2.5% 3.5%;
+    background-color: #efefef;
+}
+
+.container--tabs .tab-content>.active {
+    display: block;
+}

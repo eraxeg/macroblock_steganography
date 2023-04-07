@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<head>
+    <link href="tabs.css" rel="stylesheet">
+    <script src="tabs.js"></script>
+
+</head>
+
+<div class="container--tabs">
+    <section class="row">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#encode">Encode</a></li>
+            <li class=""><a href="#decode">Decode</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="encode" class="tab-pane active">
+                <span class="glyphicon glyphicon-leaf glyphicon--home--feature two columns text-center"></span>
+                <span class="col-md-10">
+                    <h3>Encode</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                </span>
+            </div>
+            <div id="decode" class="tab-pane">
+                <span class="glyphicon glyphicon-fire glyphicon--home--feature two columns text-center"></span>
+                <span class="col-md-10">
+                    <h3>Decode</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                </span>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    window.onblur = function () { window.onfocus = function () { location.reload(true) } };
+</script>
