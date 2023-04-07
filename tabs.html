@@ -27,7 +27,7 @@
 
                             </div>
                             <div style="flex: 1 1 auto">
-                                <textarea id="message" class="boxsizingBorder" style="width:100%;"
+                                <textarea id="message" class="boxsizingBorder" style="width:100%; height: 200px"
                                     onInput="autoGrow(this)"></textarea>
                                     <div>
                                         <label for="amount">DCT Message Strength</label>
@@ -41,11 +41,12 @@
                     
                             </div>
                         </div>
-                        <div style="flex: 1; display: flex; gap: 1em;cursor:pointer"  onclick="toggleEncoded()">
+                        <div style="flex-direction: column; flex: 1; display: flex; gap: 1em;cursor:pointer"  onclick="toggleEncoded()">
                             <div id="encoded-image" class="thumb" data-label="" style=" background-size: contain; background-repeat: no-repeat; background-position: left center;"></div>
                             <div id="encoded-image-text" style="display:none">
                                 <pre id="encoder-decoded-text"></pre>
                             </div>
+                            <div><label id="compcaption"></label></div>
                         </div>
                     </div>
                 </div>
@@ -127,13 +128,13 @@
 
 
     var format_info = function (quality, w, h, inbytes, outbytes, encodetime) {
-        var compr = "" + outbytes + " bytes  " + ((inbytes == 0) ? '' : ' / ' + String((inbytes / outbytes).toFixed(1)) + ':1');
-
+        var compr = "" + outbytes + " bytes  ";
+        // ((inbytes == 0) ? '' : ' / ' + String((inbytes / outbytes).toFixed(1)) + ':1')
         var dim = "(" + w + "x" + h + ")";
-        var str = quality + "% / " + compr + " / " + encodetime + " ms";
-        document.querySelector('#compression').innerHTML = str;
-        document.querySelector('#origcaption').innerHTML = "Original Image " + dim + " / " + inbytes + " bytes";
-        document.querySelector('#compcaption').innerHTML = "Compressed Image " + dim + " / " + compr;
+        // var str = quality + "% / " + compr + " / " + encodetime + " ms";
+        // document.querySelector('#compression').innerHTML = str;
+        // document.querySelector('#origcaption').innerHTML = "Original Image " + dim + " / " + inbytes + " bytes";
+        document.querySelector('#compcaption').innerHTML = compr;
     }
 
     var do_encode = function (quality) {
@@ -167,7 +168,7 @@
         worker.onmessage = function (msg) {
             switch (msg.data.reason) {
                 case 'image':
-                    // format_info(msg.data.quality, msg.data.width, msg.data.height, msg.data.width * msg.data.height * 3, msg.data.bw, msg.data.encodetime);
+                    format_info(msg.data.quality, msg.data.width, msg.data.height, msg.data.width * msg.data.height * 3, msg.data.bw, msg.data.encodetime);
                     var url = msg.data.url;
 
                     var dstImgElem = document.getElementById("encoded-image");
