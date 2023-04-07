@@ -70,12 +70,14 @@ function updateThumbnail(dropZoneElement, file) {
             thumbnailElement.style.backgroundRepeat = "no-repeat";
             thumbnailElement.style.backgroundPosition = "center";
 
-            var j = new JpegImage();
-            j.onload = function () {
-                var textElem = document.getElementById("decoded-text");
-                textElem.textContent = j.getMessage();
-            };
-            j.load(reader.result)
+            if (thumbnailElement.parentElement.id == "decode-drop-zone") {
+                var j = new JpegImage();
+                j.onload = function () {
+                    var textElem = document.getElementById("decoded-text");
+                    textElem.textContent = j.getMessage();
+                };
+                j.load(reader.result)
+            }
         };
     } else {
         thumbnailElement.style.backgroundImage = null;

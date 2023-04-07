@@ -4,49 +4,68 @@
     <link href="tabs.css" rel="stylesheet">
     <link href="dropzone.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
-
+    <title>DCT Decoy</title>
 </head>
 
-<div class="container--tabs">
-    <section class="row">
-        <ul class="nav nav-tabs">
-            <li class=""><a href="#encode">Encode</a></li>
-            <li class="active"><a href="#decode">Decode</a></li>
-        </ul>
-        <div class="tab-content">
-            <div id="encode" class="tab-pane">
-                <h3>Encode</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-            </div>
-            <div id="decode" class="tab-pane active">
-                <h3>Decode</h3>
-                <div style="display: flex; gap: 1em">
-                    <div class="drop-zone">
-                        <span class="drop-zone__prompt">Drop file here or click to upload</span>
-                        <input type="file" name="myFile" class="drop-zone__input">
-                        <!-- <div class="drop-zone__thumb" data-label="lena.jpg" style="
-                            background-image: url('lena.jpg');
-                            background-size: contain;
-                            background-repeat: no-repeat;
-                            background-position: center;
-                        ">
-                        </div> -->
-                    </div>
-                    <div style="overflow:auto">
-                        <pre id="decoded-text">
-                            </pre>
-                    </div>
+<body>
+    <div class="container--tabs">
+        <section class="row">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#encode">Encode</a></li>
+                <li class=""><a href="#decode">Decode</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="encode" class="tab-pane active">
+                    <h3>Encode</h3>
+                    <div style="display: flex; gap: 5em; flex-wrap: wrap">
+                        <div style="display: flex; gap: 1em; flex: 0 1 50%">
+                            <div id="encode-drop-zone" class="drop-zone" style="flex: 0 1 auto">
+                                <!-- <span class="drop-zone__prompt">Drop file here or click to upload</span> -->
+                                <input type="file" name="myFile" class="drop-zone__input">
+                                <div class="drop-zone__thumb" data-label="lena.jpg" style="background-image: url('lena.jpg'); background-size: contain; background-repeat: no-repeat; background-position: center center;"></div>
 
+                            </div>
+                            <div style="flex: 1 1 auto">
+                                <textarea id="message" class="boxsizingBorder" style="width:100%;"
+                                    onInput="autoGrow(this)"></textarea>
+                            </div>
+                        </div>
+                        <div style="flex: 1">
+                            <div class="drop-zone">
+                                <div class="drop-zone__thumb" data-label="lena.jpg" style="background-image: url('lena.jpg'); background-size: contain; background-repeat: no-repeat; background-position: center center;"></div>
+                            </div>
+                            <div style="overflow:auto">
+                                <pre id="e-decoded-text"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="decode" class="tab-pane">
+                    <h3>Decode</h3>
+                    <div style="display: flex; gap: 1em">
+                        <div id="decode-drop-zone" class="drop-zone">
+                            <span class="drop-zone__prompt">Drop file here or click to upload</span>
+                            <input type="file" name="decode-file" class="drop-zone__input">
+                        </div>
+                        <div style="overflow:auto">
+                            <pre id="decoded-text"></pre>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-</div>
+        </section>
+    </div>
+</body>
 
 <script src="tabs.js"></script>
 <script src="dropzone.js"></script>
 <script src="jpgjs/jpg.js"></script>
 <script>
-    // window.onblur = function () { window.onfocus = function () { location.reload(true) } };
+        // window.onblur = function () { window.onfocus = function () { location.reload(true) } };
 
-</script>
+        function autoGrow(element) {
+            element.style.height = "5px";
+            element.style.height = (element.scrollHeight + 20) + "px";
+        }
+    </script>
