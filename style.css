@@ -19,6 +19,11 @@ label {
     margin: .75em 0 .5em 0;
 }
 
+pre {
+  letter-spacing: .5em;
+  font-size: .7em;
+  font-weight: bold;
+}
 .flex-container {
   display: flex;
   flex-wrap: wrap;
