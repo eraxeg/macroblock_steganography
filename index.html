@@ -1,67 +1,20 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="utf-8">
-  <title>DCT Decoy</title>
-  <script src="jpgjs/jpg.js"></script>
-  <script src="petitoJPEG/demo/support/spin.js"></script>
-  <style media="screen" type="text/css">
-    body {
-      margin: 1em;
-      font-family: monospace;
-  }
-
-  .container {
-      max-width: 60em;
-      margin-right: auto;
-      margin-left: auto;
-  }
-
-  .col {
-      padding: 0.5em;
-/*  background: #fafafa;*/
-}
-
-label {
-    display:block;
-    margin: .75em 0 .5em 0;
-}
-
-.flex-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.flex-item-left {
-  flex: 33%;
-}
-
-.flex-item-right {
-  flex: 66%;
-  max-width: 600px;
-}
-
-.flex-item-left, .flex-item-right > div {
-  flex: 1;
-  margin: 1em;
-}
-
-/* Responsive layout - makes a one column layout instead of a two-column layout */
-@media (max-width: 800px) {
-    .container {
-        max-width: none;
-    }
-    
-    .flex-item-right, .flex-item-left {
-        flex: 100%;
-    }
-} 
-
-</style>
+    <meta charset="utf-8">
+    <title>DCT Decoy</title>
+    <script src="jpgjs/jpg.js"></script>
+    <script src="petitoJPEG/demo/support/spin.js"></script>
+    <link type="text/css" href="style.css" rel="stylesheet">
+    </style>
 </head>
+
 <body>
     <div class="container">
-        <div><h1 style="text-align:center ">DCT DECOY</h1></div>
+        <div>
+            <h1 style="text-align:center">DCT DECOY</h1>
+        </div>
         <div class="flex-container">
             <div class="flex-item-left">
                 <div><label>Image</label><input type="file" onchange='readfile(this.files[0])'></input></div>
@@ -71,11 +24,12 @@ label {
                 </div>
                 <div>
                     <label for="amount">DCT Message Strength</label>
-                    <input type="range" id="amount" style="" min="1" max="1000" value="250" data-highlight="true" ></input>
+                    <input type="range" id="amount" style="" min="1" max="1000" value="250"
+                        data-highlight="true"></input>
                 </div>
                 <div>
                     <label for="slider">Quality</label>
-                    <input type="range" id="slider" style="" min="1" max="100" value="50" data-highlight="true" ></input>
+                    <input type="range" id="slider" style="" min="1" max="100" value="50" data-highlight="true"></input>
                 </div>
                 <div id="compression" style="font-weight: bold; font-size: 1em;"></div>
                 <div>
@@ -93,7 +47,7 @@ label {
                     <label id="origcaption">Original Image</label>
                     <img id="img" src="lena.jpg" />
                 </div>
-            </div>  
+            </div>
 
         </div>
 
@@ -104,183 +58,184 @@ label {
 
 
 
-    <script> 
-/**
- * The spinner object from spin.js
- */
+    <script>
+        /**
+         * The spinner object from spin.js
+         */
         var opts = {
-  lines: 7, // The number of lines to draw
-  length: 10, // The length of each line
-  width: 10, // The line thickness
-  radius: 12, // The radius of the inner circle
-  corners: 1.0, // Corner roundness (0..1)
-  rotate: 19, // The rotation offset
-  direction: 1, // 1: clockwise, -1: counterclockwise
-  color: 'white', // #rgb or #rrggbb or array of colors
-  speed: 1.2, // Rounds per second
-  trail: 60, // Afterglow percentage
-  shadow: false, // Whether to render a shadow
-  hwaccel: true, // Whether to use hardware acceleration
-  className: 'spinner', // The CSS class to assign to the spinner
-  zIndex: 2e9, // The z-index (defaults to 2000000000)
-  top: '50%', // Top position relative to parent in px
-  left: '50%' // Left position relative to parent in px
-};
+            lines: 7, // The number of lines to draw
+            length: 10, // The length of each line
+            width: 10, // The line thickness
+            radius: 12, // The radius of the inner circle
+            corners: 1.0, // Corner roundness (0..1)
+            rotate: 19, // The rotation offset
+            direction: 1, // 1: clockwise, -1: counterclockwise
+            color: 'white', // #rgb or #rrggbb or array of colors
+            speed: 1.2, // Rounds per second
+            trail: 60, // Afterglow percentage
+            shadow: false, // Whether to render a shadow
+            hwaccel: true, // Whether to use hardware acceleration
+            className: 'spinner', // The CSS class to assign to the spinner
+            zIndex: 2e9, // The z-index (defaults to 2000000000)
+            top: '50%', // Top position relative to parent in px
+            left: '50%' // Left position relative to parent in px
+        };
 
 
-/**
- * Returns an ImageData object 
- * @param imgElem
- */
-function getPixelsFromImageElement(imgElem) {
-    // imgElem must be on the same server otherwise a cross-origin error will be thrown "SECURITY_ERR: DOM Exception 18"
-    // you can lauch chrome with --allow-file-access-from-files to avoid this on local file access. Http access should work fine
-    // if pulling images from the same domain
-    var canvas = document.createElement("canvas");
-    canvas.width = imgElem.width;
-    canvas.height = imgElem.height;
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(imgElem, 0, 0);
-    return ctx.getImageData(0,0,canvas.width,canvas.height);
-}
-
-
-// this variables contains a copy of the ImageData buffer for the original image
-var origImageData;
-var origUrl="lena.jpg";
-
-function readfile(f) {
-    var reader = new FileReader(); 
-    reader.readAsDataURL(f); 
-    reader.onload = function() {
-        origUrl = reader.result;
-        //var out = document.getElementById("img");
-        var out = document.createElement("img");
-        out.style.width = "";
-        out.setAttribute('src', origUrl );
-        out.onload = function() {
-            origImageData = getPixelsFromImageElement(out);
-            do_encode(50);
+        /**
+         * Returns an ImageData object 
+         * @param imgElem
+         */
+        function getPixelsFromImageElement(imgElem) {
+            // imgElem must be on the same server otherwise a cross-origin error will be thrown "SECURITY_ERR: DOM Exception 18"
+            // you can lauch chrome with --allow-file-access-from-files to avoid this on local file access. Http access should work fine
+            // if pulling images from the same domain
+            var canvas = document.createElement("canvas");
+            canvas.width = imgElem.width;
+            canvas.height = imgElem.height;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(imgElem, 0, 0);
+            return ctx.getImageData(0, 0, canvas.width, canvas.height);
         }
-    }
-    
-    reader.onerror = function(e) { // If anything goes wrong
-        console.log("Error", e); // Just log it 
-    };
-}
-
-var format_info = function(quality, w, h, inbytes, outbytes, encodetime ) {
-    var compr = "" +outbytes + " bytes  " + ((inbytes==0) ? '' :  ' / '+ String((inbytes/outbytes).toFixed(1)) + ':1')  ;
-
-    var dim = "("+w+"x"+h+")";
-    var str = quality + "% / " + compr + " / " + encodetime + " ms";    
-    document.querySelector('#compression').innerHTML = str;
-    document.querySelector('#origcaption').innerHTML = "Original Image "+dim+" / "+ inbytes + " bytes";
-    document.querySelector('#compcaption').innerHTML = "Compressed Image "+dim+" / " + compr;
-}
-
-var do_encode = function(quality) {
-    var displayWidth = "100%";
-
-    // create web worker instance on global object
-    if( typeof worker == 'undefined' ) {
-        worker = new Worker("petitoJPEG/pttjpeg.js");
-    }
 
 
-    var m = { 
-        'quality' : quality,
-        'imageData' : origImageData,
-        'width' : origImageData.width,
-        'height' : origImageData.height,
-        'sr' : "auto",
-        'message': document.querySelector("#message").value,
-        'amount': document.querySelector("#amount").value
-    };
+        // this variables contains a copy of the ImageData buffer for the original image
+        var origImageData;
+        var origUrl = "lena.jpg";
+
+        function readfile(f) {
+            var reader = new FileReader();
+            reader.readAsDataURL(f);
+            reader.onload = function () {
+                origUrl = reader.result;
+                //var out = document.getElementById("img");
+                var out = document.createElement("img");
+                out.style.width = "";
+                out.setAttribute('src', origUrl);
+                out.onload = function () {
+                    origImageData = getPixelsFromImageElement(out);
+                    do_encode(50);
+                }
+            }
+
+            reader.onerror = function (e) { // If anything goes wrong
+                console.log("Error", e); // Just log it 
+            };
+        }
+
+        var format_info = function (quality, w, h, inbytes, outbytes, encodetime) {
+            var compr = "" + outbytes + " bytes  " + ((inbytes == 0) ? '' : ' / ' + String((inbytes / outbytes).toFixed(1)) + ':1');
+
+            var dim = "(" + w + "x" + h + ")";
+            var str = quality + "% / " + compr + " / " + encodetime + " ms";
+            document.querySelector('#compression').innerHTML = str;
+            document.querySelector('#origcaption').innerHTML = "Original Image " + dim + " / " + inbytes + " bytes";
+            document.querySelector('#compcaption').innerHTML = "Compressed Image " + dim + " / " + compr;
+        }
+
+        var do_encode = function (quality) {
+            var displayWidth = "100%";
+
+            // create web worker instance on global object
+            if (typeof worker == 'undefined') {
+                worker = new Worker("petitoJPEG/pttjpeg.js");
+            }
 
 
-    // Don't schedule encode if it's in progress
-    // we can do this because the single threadness of this module is guaranteed
-    if( !inprogress  ) {
-        var target = document.getElementById('spinner');
-        spinner = new Spinner(opts).spin(target);
-        worker.postMessage(m);
-        inprogress = true;
-    }
-
-    worker.onmessage = function(msg) {
-        switch(msg.data.reason) {
-        case 'image':
-            format_info( msg.data.quality, msg.data.width, msg.data.height, msg.data.width*msg.data.height*3,  msg.data.bw, msg.data.encodetime  );
-            var url = msg.data.url;
-
-            var dstImgElem = document.getElementById("dstimg");
-            var imgElem = document.getElementById("img");
-            var textElem = document.getElementById("decoded-text");
-
-            imgElem.style.width = displayWidth;
-            dstImgElem.style.width = displayWidth;
-
-            dstImgElem.setAttribute("src", url);
-            imgElem.setAttribute("src", origUrl );
+            var m = {
+                'quality': quality,
+                'imageData': origImageData,
+                'width': origImageData.width,
+                'height': origImageData.height,
+                'sr': "auto",
+                'message': document.querySelector("#message").value,
+                'amount': document.querySelector("#amount").value
+            };
 
 
+            // Don't schedule encode if it's in progress
+            // we can do this because the single threadness of this module is guaranteed
+            if (!inprogress) {
+                var target = document.getElementById('spinner');
+                spinner = new Spinner(opts).spin(target);
+                worker.postMessage(m);
+                inprogress = true;
+            }
+
+            worker.onmessage = function (msg) {
+                switch (msg.data.reason) {
+                    case 'image':
+                        format_info(msg.data.quality, msg.data.width, msg.data.height, msg.data.width * msg.data.height * 3, msg.data.bw, msg.data.encodetime);
+                        var url = msg.data.url;
+
+                        var dstImgElem = document.getElementById("dstimg");
+                        var imgElem = document.getElementById("img");
+                        var textElem = document.getElementById("decoded-text");
+
+                        imgElem.style.width = displayWidth;
+                        dstImgElem.style.width = displayWidth;
+
+                        dstImgElem.setAttribute("src", url);
+                        imgElem.setAttribute("src", origUrl);
+
+
+                        inprogress = false;
+                        spinner.stop();
+
+                        var j = new JpegImage();
+                        j.onload = function () {
+                            textElem.innerHTML = j.getMessage();
+                        };
+                        j.load(url)
+
+                        break;
+                    case 'log':
+                        console.log(msg.data.log);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        window.onload = function () {
+            document.querySelector('#message').value = " !%&.\/;<                               \r\n\"$'-0:=j                               \r\n#(,19>ik                               \r\n)+28?hlu                               \r\n*37@gmtv                               \r\n46afnsw\\                               \r\n5beorx[]                               \r\ncdpqyz^_"
+
+            // this variables contains a copy of the ImageData buffer for the original image
+            origImageData = getPixelsFromImageElement(document.getElementById('img'));
             inprogress = false;
-            spinner.stop();
+            do_encode(50);
+            document.querySelector('#slider').addEventListener('change', function () {
+                var val = document.querySelector('#slider').value;
+                console.log(val);
+                do_encode(val | 0);
+            });
 
-            var j = new JpegImage();
-              j.onload = function() {
-                textElem.innerHTML = j.getMessage();
-              };
-            j.load(url)
+            document.querySelector('#slider').addEventListener('slidestop', function () {
+                var val = document.querySelector('#slider').value;
+                console.log(val);
+                do_encode(val | 0);
+            });
 
-            break;
-        case 'log':
-            console.log(msg.data.log);
-            break;
-        default:
-            break;
-        }
-    }
-}
+            document.querySelector('#amount').addEventListener('change', function () {
+                var val = document.querySelector('#slider').value;
+                console.log(val);
+                do_encode(val | 0);
+            });
 
-window.onload = function() { 
-    document.querySelector('#message').value = " !%&.\/;<                               \r\n\"$'-0:=j                               \r\n#(,19>ik                               \r\n)+28?hlu                               \r\n*37@gmtv                               \r\n46afnsw\\                               \r\n5beorx[]                               \r\ncdpqyz^_"
+            document.querySelector('#message').addEventListener('keyup', function () {
+                var val = document.querySelector('#slider').value;
+                console.log(val);
+                do_encode(val | 0);
+            });
 
-    // this variables contains a copy of the ImageData buffer for the original image
-    origImageData = getPixelsFromImageElement( document.getElementById('img'));
-    inprogress = false;
-    do_encode(50); 
-    document.querySelector('#slider').addEventListener('change', function() {
-      var val = document.querySelector('#slider').value;
-      console.log(val);
-      do_encode(val | 0);
-  });
-
-    document.querySelector('#slider').addEventListener('slidestop', function() {
-      var val = document.querySelector('#slider').value;
-      console.log(val);
-      do_encode(val | 0);
-  });
-
-    document.querySelector('#amount').addEventListener('change', function() {
-      var val = document.querySelector('#slider').value;
-      console.log(val);
-      do_encode(val | 0);
-  });
-
-    document.querySelector('#message').addEventListener('keyup', function() {
-      var val = document.querySelector('#slider').value;
-      console.log(val);
-      do_encode(val | 0);
-  });
-
-    document.querySelector('#message').addEventListener('change', function() {
-      var val = document.querySelector('#slider').value;
-      // console.log(val);
-      do_encode(val | 0);
-  });
-};
-</script>
+            document.querySelector('#message').addEventListener('change', function () {
+                var val = document.querySelector('#slider').value;
+                // console.log(val);
+                do_encode(val | 0);
+            });
+        };
+    </script>
 </body>
+
 </html>
