@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    <h1>DCT Decoy</h1>
     <div class="container--tabs">
         <section class="row">
             <ul class="nav nav-tabs">
@@ -41,7 +42,7 @@
                             </div>
                         </div>
                         <div style="flex: 1; display: flex; gap: 1em;cursor:pointer"  onclick="toggleEncoded()">
-                            <div id="encoded-image" class="thumb" data-label="" style="background-image: url('lena.jpg'); background-size: contain; background-repeat: no-repeat; background-position: left center;"></div>
+                            <div id="encoded-image" class="thumb" data-label="" style=" background-size: contain; background-repeat: no-repeat; background-position: left center;"></div>
                             <div id="encoded-image-text" style="display:none">
                                 <pre id="encoder-decoded-text"></pre>
                             </div>
@@ -189,9 +190,13 @@
         document.querySelector('#message').value = " !%&.\/;<                               \r\n\"$'-0:=j                               \r\n#(,19>ik                               \r\n)+28?hlu                               \r\n*37@gmtv                               \r\n46afnsw\\                               \r\n5beorx[]                               \r\ncdpqyz^_"
 
         // this variables contains a copy of the ImageData buffer for the original image
-        // origImageData = getPixelsFromImageElement(document.getElementById('img'));
+        let origImage = new Image();
+        let source = document.querySelector("#image-to-encode").style.backgroundImage.replace("url(\"", "").replace("\"\)", "")
+        console.log(source)
+        origImage.src = source
+        origImageData = getPixelsFromImageElement(origImage);
         inprogress = false;
-        // do_encode(50);
+        do_encode(50);
         document.querySelector('#slider').addEventListener('change', function () {
             var val = document.querySelector('#slider').value;
             console.log(val);
@@ -228,7 +233,10 @@
     // window.onblur = function () { window.onfocus = function () { location.reload(true) } };
 
     function autoGrow(element) {
-        element.style.height = "5px";
-        element.style.height = (element.scrollHeight + 20) + "px";
+        // if (element.scrollHeight+20 < element.style.height) return;
+
+        // console.log("auto")
+        // element.style.height = "5px";
+        // element.style.height = (element.scrollHeight + 20) + "px";
     }
     </script>
