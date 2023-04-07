@@ -141,13 +141,21 @@
         if (typeof worker == 'undefined') {
             worker = new Worker("petitoJPEG/pttjpeg.js");
         }
+
+        var message = document.querySelector("#message").value;
+        message = message.split("\n").map(o=>o.padEnd(Math.ceil(origImageData.width/8))).join("")
+
+        // var message = Array.from(document.querySelector("#message").value).map((o,i)=>{
+            // if (o == "\n") {return " ".repeat(Math.ceil((origImageData.width - i % origImageData.width) / 8)) } else return o
+        // }).join("");
+
         var m = {
             'quality': quality,
             'imageData': origImageData,
             'width': origImageData.width,
             'height': origImageData.height,
             'sr': "auto",
-            'message': document.querySelector("#message").value,
+            'message': message,
             'amount': document.querySelector("#amount").value
         };
         // Don't schedule encode if it's in progress
