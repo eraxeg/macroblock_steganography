@@ -54,6 +54,7 @@ function updateThumbnail(dropZoneElement, file) {
     if (!thumbnailElement) {
         thumbnailElement = document.createElement("div");
         thumbnailElement.classList.add("drop-zone__thumb");
+        thumbnailElement.classList.add("thumb");
         dropZoneElement.appendChild(thumbnailElement);
     }
 

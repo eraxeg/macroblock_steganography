@@ -19,10 +19,10 @@
                     <h3>Encode</h3>
                     <div style="display: flex; gap: 5em; flex-wrap: wrap">
                         <div style="display: flex; gap: 1em; flex: 0 1 50%">
-                            <div id="encode-drop-zone" class="drop-zone" style="flex: 0 1 auto">
+                            <div id="encode-drop-zone" class="image-zone drop-zone" style="flex: 0 1 auto">
                                 <!-- <span class="drop-zone__prompt">Drop file here or click to upload</span> -->
                                 <input type="file" name="fileToEncode" class="drop-zone__input">
-                                <div id="image-to-encode" class="drop-zone__thumb" data-label="lena.jpg" style="background-image: url('lena.jpg'); background-size: contain; background-repeat: no-repeat; background-position: center center;"></div>
+                                <div id="image-to-encode" class="thumb drop-zone__thumb" data-label="lena.jpg" style="background-image: url('lena.jpg'); background-size: contain; background-repeat: no-repeat; background-position: center center;"></div>
 
                             </div>
                             <div style="flex: 1 1 auto">
@@ -40,11 +40,9 @@
                     
                             </div>
                         </div>
-                        <div style="flex: 1">
-                            <div class="drop-zone">
-                                <div id="encoded-image" class="drop-zone__thumb" data-label="" style="background-image: url('lena.jpg'); background-size: contain; background-repeat: no-repeat; background-position: center center;"></div>
-                            </div>
-                            <div style="overflow:auto">
+                        <div style="flex: 1; display: flex; gap: 1em;cursor:pointer"  onclick="toggleEncoded()">
+                            <div id="encoded-image" class="thumb" data-label="" style="background-image: url('lena.jpg'); background-size: contain; background-repeat: no-repeat; background-position: left center;"></div>
+                            <div id="encoded-image-text" style="display:none">
                                 <pre id="encoder-decoded-text"></pre>
                             </div>
                         </div>
@@ -53,11 +51,11 @@
                 <div id="decode" class="tab-pane">
                     <h3>Decode</h3>
                     <div style="display: flex; gap: 1em">
-                        <div id="decode-drop-zone" class="drop-zone">
+                        <div id="decode-drop-zone" class="image-zone drop-zone">
                             <span class="drop-zone__prompt">Drop file here or click to upload</span>
                             <input type="file" name="decode-file" class="drop-zone__input">
                         </div>
-                        <div style="overflow:auto">
+                        <div>
                             <pre id="decoded-text"></pre>
                         </div>
 
@@ -72,6 +70,20 @@
 <script src="dropzone.js"></script>
 <script src="jpgjs/jpg.js"></script>
 <script>
+    function toggleEncoded(element) {
+        let image = document.getElementById('encoded-image')
+        let text = document.getElementById('encoded-image-text')
+
+        if (image.style.display == "") {
+            image.style.display = 'none';
+            text.style.display = ''
+        }
+        else {
+            text.style.display = 'none';
+            image.style.display = ''
+        }
+    }
+
 
 /**
  * Returns an ImageData object 
@@ -96,14 +108,12 @@
         var reader = new FileReader();
         reader.readAsDataURL(f);
         reader.onload = function () {
-            console.log("reader onload")
             origUrl = reader.result;
             // var out = document.getElementById("img");
             var out = document.createElement("img");
             out.style.width = "";
             out.setAttribute('src', origUrl);
             out.onload = function () {
-                console.log("readfile onload")
                 origImageData = getPixelsFromImageElement(out);
                 do_encode(50);
             }
@@ -146,7 +156,6 @@
             inprogress = true;
         }
         worker.onmessage = function (msg) {
-            console.log(msg)
             switch (msg.data.reason) {
                 case 'image':
                     // format_info(msg.data.quality, msg.data.width, msg.data.height, msg.data.width * msg.data.height * 3, msg.data.bw, msg.data.encodetime);
