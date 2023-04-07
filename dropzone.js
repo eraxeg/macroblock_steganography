@@ -78,6 +78,16 @@ function updateThumbnail(dropZoneElement, file) {
                 };
                 j.load(reader.result)
             }
+            else if (thumbnailElement.parentElement.id == "encode-drop-zone") {
+                var j = new JpegImage();
+                j.onload = function () {
+                    readfile(file);
+                    var textElem = document.getElementById("encoder-decoded-text");
+                    textElem.textContent = j.getMessage();
+                };
+                j.load(reader.result)
+
+            }
         };
     } else {
         thumbnailElement.style.backgroundImage = null;
