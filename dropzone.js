@@ -66,6 +66,9 @@ function updateThumbnail(dropZoneElement, file) {
         reader.readAsDataURL(file);
         reader.onload = () => {
             thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+            thumbnailElement.style.backgroundSize = "contain";
+            thumbnailElement.style.backgroundRepeat = "no-repeat";
+            thumbnailElement.style.backgroundPosition = "center";
 
             var j = new JpegImage();
             j.onload = function () {
@@ -73,7 +76,6 @@ function updateThumbnail(dropZoneElement, file) {
                 textElem.textContent = j.getMessage();
             };
             j.load(reader.result)
-            console.log(j)
         };
     } else {
         thumbnailElement.style.backgroundImage = null;
