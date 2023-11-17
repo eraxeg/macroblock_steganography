@@ -27,8 +27,7 @@
 
                             </div>
                             <div style="flex: 1 1 auto">
-                                <textarea id="message" class="boxsizingBorder" style="width:100%; height: 200px"
-                                    onInput="autoGrow(this)"></textarea>
+                                <textarea id="message" class="boxsizingBorder" style="width:100%"></textarea>
                                     <div>
                                         <label for="amount">DCT Message Strength</label>
                                         <input type="range" id="amount" style="" min="1" max="1000" value="250"
@@ -196,8 +195,8 @@
         }
     }
     window.onload = function () {
-        document.querySelector('#message').value = " !%&.\/;<                               \r\n\"$'-0:=j                               \r\n#(,19>ik                               \r\n)+28?hlu                               \r\n*37@gmtv                               \r\n46afnsw\\                               \r\n5beorx[]                               \r\ncdpqyz^_"
-
+        document.querySelector('#message').value = " !%&.\/;<\r\n\"$'-0:=j\r\n#(,19>ik\r\n)+28?hlu\r\n*37@gmtv\r\n46afnsw\\\r\n5beorx[]\r\ncdpqyz^_"
+        adaptTextarea(document.querySelector('#message'))
         // this variables contains a copy of the ImageData buffer for the original image
         let origImage = new Image();
         let source = document.querySelector("#image-to-encode").style.backgroundImage.replace("url(\"", "").replace("\"\)", "")
@@ -239,13 +238,16 @@
 
 
 
-    // window.onblur = function () { window.onfocus = function () { location.reload(true) } };
+    const textareaEle = document.getElementById('message');
 
-    function autoGrow(element) {
-        // if (element.scrollHeight+20 < element.style.height) return;
+    textareaEle.addEventListener('input', () => {
+        adaptTextarea(textareaEle);
+    });
 
-        // console.log("auto")
-        // element.style.height = "5px";
-        // element.style.height = (element.scrollHeight + 20) + "px";
+    function adaptTextarea(textareaEle) {
+        textareaEle.style.height = 'auto';
+        textareaEle.style.height = `${textareaEle.scrollHeight+3}px`;
     }
+
+
     </script>
