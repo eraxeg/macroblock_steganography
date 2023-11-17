@@ -58,15 +58,26 @@ function updateThumbnail(dropZoneElement, file) {
         dropZoneElement.appendChild(thumbnailElement);
     }
 
-    thumbnailElement.dataset.label = file.name;
 
     // Show thumbnail for image files
     if (file.type.startsWith("image/")) {
         const reader = new FileReader();
 
         reader.readAsDataURL(file);
+
+        const updateImage = function(j, reader) {
+            try {
+                j.load(reader.result)
+                thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
+                thumbnailElement.dataset.label = file.name;
+            }
+            catch(err) {
+                console.log(err)
+                window.alert('Image is too large to process! Please resize it and try again.')
+            }
+        }
+
         reader.onload = () => {
-            thumbnailElement.style.backgroundImage = `url('${reader.result}')`;
             thumbnailElement.style.backgroundSize = "contain";
             thumbnailElement.style.backgroundRepeat = "no-repeat";
             thumbnailElement.style.backgroundPosition = "center";
@@ -77,7 +88,7 @@ function updateThumbnail(dropZoneElement, file) {
                     var textElem = document.getElementById("decoded-text");
                     textElem.textContent = j.getMessage();
                 };
-                j.load(reader.result)
+                updateImage(j, reader)
             }
             else if (thumbnailElement.parentElement.id == "encode-drop-zone") {
                 var j = new JpegImage();
@@ -86,8 +97,7 @@ function updateThumbnail(dropZoneElement, file) {
                     var textElem = document.getElementById("encoder-decoded-text");
                     textElem.textContent = j.getMessage();
                 };
-                j.load(reader.result)
-
+                updateImage(j, reader)
             }
         };
     } else {
