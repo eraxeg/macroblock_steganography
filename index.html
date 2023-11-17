@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <div style="flex-direction: column; flex: 1; display: flex; gap: 1em;cursor:pointer"  onclick="toggleEncoded()">
-                            <div id="encoded-image" class="thumb" data-label="" style=" background-size: contain; background-repeat: no-repeat; background-position: left center;"></div>
+                            <div id="encoded-image" class="thumb" data-label="" style=" background-size: contain; background-repeat: no-repeat; background-position: left center;"><img id="encoded-img"></div>
                             <div id="encoded-image-text" style="display:none">
                                 <pre id="encoder-decoded-text"></pre>
                             </div>
@@ -170,11 +170,11 @@
                     format_info(msg.data.quality, msg.data.width, msg.data.height, msg.data.width * msg.data.height * 3, msg.data.bw, msg.data.encodetime);
                     var url = msg.data.url;
 
-                    var dstImgElem = document.getElementById("encoded-image");
+                    var dstImgElem = document.getElementById("encoded-img");
                     var imgElem = document.getElementById("image-to-encode");
                     var textElem = document.getElementById("encoder-decoded-text");
 
-                    dstImgElem.style.backgroundImage = `url('${url}')`;
+                    dstImgElem.src = `${url}`;
                     imgElem.style.backgroundImage = `url('${origUrl}')`;
 
                     inprogress = false;
